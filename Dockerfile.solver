@@ -1,0 +1,11 @@
+FROM phusion/baseimage:18.04-1.0.0
+
+RUN apt-get update -y && apt-get install -y python3 wamerican
+
+WORKDIR /work
+
+RUN curl -L https://github.com/yudai/gotty/releases/download/v1.0.1/gotty_linux_amd64.tar.gz | tar xz
+
+COPY solver.py .
+
+CMD /work/gotty -w --port 80 --title-format "Wordle Solver" python3 solver.py

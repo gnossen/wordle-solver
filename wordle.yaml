@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordle
+  labels:
+    app: wordle
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordle
+  template:
+    metadata:
+      labels:
+        app: wordle
+    spec:
+      containers:
+      - name: wordle
+        image: docker:5000/wordle:1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordle-solver
+  labels:
+    app: wordle-solver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordle-solver
+  template:
+    metadata:
+      labels:
+        app: wordle-solver
+    spec:
+      containers:
+      - name: wordle-solver
+        image: docker:5000/wordle-solver:1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordle-solver
+  labels:
+    app: wordle-solver
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: wordle-solver
