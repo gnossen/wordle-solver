@@ -1,10 +1,7 @@
-# Load dictionary into memory
-# analyze frequency of letters
-# Find word that maximizes information
-
 from typing import Dict, List, Mapping, Set, Tuple
 import collections
 import argparse
+import sys
 
 DICTIONARY_FILE = "/usr/share/dict/american-english"
 WORDLE_LEN = 5
@@ -206,6 +203,7 @@ class GameState:
             print("🎉🎉 Yay! 🎉🎉")
         else:
             print()
+            sys.exit(0)
 
 
 if __name__ == "__main__":
@@ -223,7 +221,10 @@ if __name__ == "__main__":
     game_state.print_candidate()
 
     while True:
-        cmd = input(prompt).strip().lower()
+        try:
+            cmd = input(prompt).strip().lower()
+        except EOFError:
+            continue
         if cmd == "help":
             print_help()
         elif cmd in ("quit", "exit"):
